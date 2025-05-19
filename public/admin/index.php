@@ -16,7 +16,7 @@
 <?php
 // Parámetros de conexión (asegúrese de que estas variables estén definidas correctamente)
 $host = 'db';
-$dbname = 'nombre_base_de_datos';  // Nombre de la base de datos corregido
+$dbname = 'st-db';  // Nombre de la base de datos corregido
 $username_db = 'usuario';          // Defina esta variable correctamente
 $password_db = 'contraseña';       // Defina esta variable correctamente
 
@@ -63,7 +63,7 @@ $result = $conn->query($sql);
                         <td><?php echo htmlspecialchars($row['fecha_ingreso']); ?></td>
                         <td><?php echo htmlspecialchars($row['estado']); ?></td>
                         <td>
-                            <a href="detalle.php?id=<?php echo urlencode($row['id']); ?>" class="btn btn-sm btn-primary">
+                            <a href="detalle.php?id=<?php echo urlencode($row['id']); ?>" class="btn btn-sm btn-dark ">
                                 Ver más
                             </a>
                         </td>
@@ -74,9 +74,13 @@ $result = $conn->query($sql);
                     <td colspan="9" class="text-center">No hay dispositivos registrados.</td>
                 </tr>
             <?php endif; ?>
+            
         </tbody>
-    </table>
-</div>
+    </table>    
+         
+        <div class="text-center">
+            <a href="agregar_dispositivos.html" class="btn btn-dark">Añadir Dispositivos</a>
+         </div>
 
 <?php
 // Cierre de conexión
