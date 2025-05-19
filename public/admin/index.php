@@ -10,78 +10,103 @@
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" 
         crossorigin="anonymous"
     />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h2 {
+            font-weight: 500;
+            color: #343a40;
+        }
+        .table thead th {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .btn-primary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-primary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .card {
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
 
 <?php
-// Parámetros de conexión (asegúrese de que estas variables estén definidas correctamente)
 $host = 'db';
-$dbname = 'nombre_base_de_datos';  // Nombre de la base de datos corregido
-$username_db = 'usuario';          // Defina esta variable correctamente
-$password_db = 'contraseña';       // Defina esta variable correctamente
+$dbname = 'st-db';
+$username_db = 'usuario';
+$password_db = 'contraseña';
 
-// Conexión a la base de datos
 $conn = new mysqli($host, $username_db, $password_db, $dbname);
 
-// Verificación de la conexión
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
-// Consulta a la base de datos
 $sql = "SELECT * FROM ordenes_servicio";
 $result = $conn->query($sql);
 ?>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Órdenes de Servicio</h2>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h2 class="mb-4 text-center">Órdenes de Servicio</h2>
 
-    <table class="table table-hover">
-        <thead class="table-light">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Nombre cliente</th>
-                <th scope="col">Dato de contacto</th>
-                <th scope="col">Tipo de dispositivo</th>
-                <th scope="col">Marca</th>
-                <th scope="col">Modelo</th>
-                <th scope="col">Fecha de ingreso</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($result && $result->num_rows > 0): ?>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['nombre_cliente']); ?></td>
-                        <td><?php echo htmlspecialchars($row['dato_contacto']); ?></td>
-                        <td><?php echo htmlspecialchars($row['tipo_dispositivo']); ?></td>
-                        <td><?php echo htmlspecialchars($row['marca']); ?></td>
-                        <td><?php echo htmlspecialchars($row['modelo']); ?></td>
-                        <td><?php echo htmlspecialchars($row['fecha_ingreso']); ?></td>
-                        <td><?php echo htmlspecialchars($row['estado']); ?></td>
-                        <td>
-                            <a href="detalle.php?id=<?php echo urlencode($row['id']); ?>" class="btn btn-sm btn-primary">
-                                Ver más
-                            </a>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="9" class="text-center">No hay dispositivos registrados.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead>
+                        <tr class="text-center">
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Contacto</th>
+                            <th>Dispositivo</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Ingreso</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($result && $result->num_rows > 0): ?>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td class="text-center"><?php echo htmlspecialchars($row['id']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['nombre_cliente']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['dato_contacto']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['tipo_dispositivo']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['marca']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['modelo']); ?></td>
+                                    <td class="text-center"><?php echo htmlspecialchars($row['fecha_ingreso']); ?></td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary"><?php echo htmlspecialchars($row['estado']); ?></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="detalle.php?id=<?php echo urlencode($row['id']); ?>" class="btn btn-sm btn-primary">
+                                            Ver más
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="9" class="text-center text-muted">No hay dispositivos registrados.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-<?php
-// Cierre de conexión
-$conn->close();
-?>
+<?php $conn->close(); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous"></script>
 </body>
